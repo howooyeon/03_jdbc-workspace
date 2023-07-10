@@ -40,9 +40,13 @@ public class MemberMenu {
 			case 3 : String userId = inputMemberId();
 					 mc.selectByUserId(userId);
 					 break;
-			case 4 : break;
+			case 4 : String userName = inputMemberName();
+					 mc.selectByUserName(userName);
+					 break;
 			case 5 : break;
-			case 6 : break;
+			case 6 : String userId1 = inputMemberId();
+					 mc.deleteMember(userId1);
+					break;
 			case 0 : System.out.println("이용해주셔서 감사합니다."); return;
 			case 9 : break;
 			default : System.out.println("메뉴를 잘못입력하셨습니다. 다시 입력해주세요.");
@@ -52,6 +56,7 @@ public class MemberMenu {
 		}
 	}
 	
+
 	/**
 	 * 회원 추가 창(서브화면)
 	 * 즉, 추가하고자 하는 회원의 정보를 입력받아서 회원 추가요청하는 창
@@ -97,6 +102,15 @@ public class MemberMenu {
 	 */
 	public String inputMemberId() {
 		System.out.print("\n 회원 아이디 입력 : ");
+		return sc.nextLine();
+	}
+	
+	/**
+	 * 사용자에게 회원 이름 입력 받은 후 그때 입력된 값을 반환시켜주는 메소드
+	 * @return 사용자가 입력한 이름
+	 */
+	public String inputMemberName() {
+		System.out.print("\n 회원 이름 입력(키워드 가능) : ");
 		return sc.nextLine();
 	}
 	
@@ -147,6 +161,11 @@ public class MemberMenu {
 	public void displayMember(Member m) {
 		System.out.println("\n 조회된 데이터는 다음과 같습니다.");
 		System.out.println(m);
+	}
+	
+	public void displayMember(String userId1) {
+		System.out.println("\n 조회된 데이터는 다음과 같습니다.");
+		System.out.println(userId1);
 	}
 	
 	

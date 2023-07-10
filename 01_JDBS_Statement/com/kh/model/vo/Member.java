@@ -28,6 +28,10 @@ public class Member {
 	// 기본생성자, 매개변수 생성자
 	
 	public Member() {	}
+	
+	public Member(String userId) {
+		this.userId= userId;
+	}
 
 	public Member(int userNo, String userId, String userPwd, String userName, String gender, int age, String email,
 			String phone, String address, String hobby, Date enrollDate) {
