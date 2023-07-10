@@ -87,8 +87,8 @@ public class MemberController {
 	public void deleteMember(String userId1) {
 		int result = new MemberDao().deleteMember(userId1);
 		
-		if(result > 0) { // 검색 결과가 없을 경우(조회된 데이터 없음)
-			new MemberMenu().displayNoData(userId1 + "에 해당하는 검색결과가 없습니다.");
+		if(result > 0) { 
+			new MemberMenu().displayNoData(userId1 + "회원 탈퇴되었습니다.");
 		} else {
 			new MemberMenu().displayMember(userId1);
 		}
