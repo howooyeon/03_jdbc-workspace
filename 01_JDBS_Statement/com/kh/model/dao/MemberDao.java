@@ -244,24 +244,27 @@ public class MemberDao {
 		
 	}
 	
-	public ArrayList<Member> selectByUserName(String userName) {
+	public ArrayList<Member> selectByUserName(String keyword) {
 		// select문(여러행 조회) => ResultSet객체 => ArrayList에 차곡차곡 담기
 		Member m = null; 
 		
 		// 필요한 변수들 셋팅
-		ArrayList<Member> unList = new ArrayList<Member>(); // [] 현재 상태는 텅 비어있는 상태
+		ArrayList<Member> List = new ArrayList<Member>(); // [] 현재 상태는 텅 비어있는 상태
 		
+		// JDBC 할라면 Connection, Statement 꼭해야되고
 		Connection conn = null;
 		Statement stmt = null;
+		// 이건 쿼리를 돌리기 위해서
 		ResultSet rset = null; // select문 실행시 조회된 결과값들이 최초로 담기는 객체
 		
 		// 실행할 SQL문
-		String sql = "SELECT * FROM MEMBER WHERE USERNAME LIKE '%" + userName + "%'";
+		// sql에 담기
+		String sql = "SELECT * FROM MEMBER WHERE USERNAME LIKE '%" + keyword + "%'";
 	
 		
 		try {
 			// 1) JDBC driver 등록
-			Class.forName("oracle.jdbc.driver.OracleDriver");
+			Class.forName("oracle.jdbc.driver.OracleDriver"); // 패키지명 클래스 등록
 			
 			// 2) Connection 생성
 			conn= DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "JDBC", "JDBC");
@@ -274,8 +277,24 @@ public class MemberDao {
 			
 			// 6) ResultSet으로부터 데이터 하나씩 뽑아서 vo객체에 주섬주섬 담고 + list에 vo객체 추가
 			while(rset.next()) {
-			
-				// 현재 rset의 커서가 가리키고 있는 한 행의 데이터들을 싹 다 뽑아서 Member 객체 주섬주섬 담기
+				//list.add(멤버객체)
+				
+//				list.add(new Member(rset.getInt("userno"),
+//									rset.getInt("userid"),
+//									rset.getInt("userpwd"),
+//									rset.getInt("username"),
+//									rset.getInt("gender"),
+//									rset.getInt("age"),
+//									rset.getInt("email"),
+//									rset.getInt("phone"),
+//									rset.getInt("address"),
+//									rset.getInt("hobby"),
+//									rset.getInt("enrolldate")
+//									));
+				
+				
+				
+				//현재 rset의 커서가 가리키고 있는 한 행의 데이터들을 싹 다 뽑아서 Member 객체 주섬주섬 담기
 				m = new Member();
 				
 				m.setUserNo(rset.getInt("USERNO"));
@@ -291,7 +310,7 @@ public class MemberDao {
 				m.setEnrollDate(rset.getDate("ENROLLDATE"));
 				// 현재 참조하고 있는 행에 대한 모든 컬럼에 대한 테이블들을 한 Member 객체에 담기 끝!
 				
-				unList.add(m); // 리스트에 해당 회원 객체 차곡차곡 담기
+				List.add(m); // 리스트에 해당 회원 객체 차곡차곡 담기
 				
 			}
 			
@@ -314,12 +333,20 @@ public class MemberDao {
 			}
 			
 		}
-		return unList; // 텅빈리스트 | 뭐라도 담겨있는 리스트
+		return List; // 텅빈리스트 | 뭐라도 담겨있는 리스트
 	}
 
+	/**
+	 * 사용자가 입력한 아이디의 회원정보를 삭제하는 메소드
+	 * @param userId1 : 사용자가 입력한 아이디
+	 * @return result : 처리된 행수
+	 */
 	public int deleteMember(String userId1) {
+		// delete fromn member where userid = ???
+		// delete문 => 처리된 행수(int) => 트랜젝션 처리
 		
 		int result = 0; 
+		
 		Connection conn = null; 
 		Statement stmt = null;
 		
@@ -367,6 +394,62 @@ public class MemberDao {
 	
 	}
 
+	/**
+	 * 사용자가 입력한 아이디의 정보를 변경 요청 처리해주는 메소드
+	 * @param m
+	 * @return 
+	 */
+	public int updateMember(Member m) {
+		// update문 => 처리된 행수(int) => 트랜젝션 처리
+		
+		int result = 0;
+		Connection conn = null;
+		Statement stmt = null;
+		
+		String sql = "UPDATE MEMBER "
+					+ 	"SET USERPWD =" + "'" + m.getUserPwd() + "' "
+					+ 		", EMAIL ='" + m.getEmail()  + "' "
+					+ 		", PHONE ='" + m.getPhone()  + "' "
+					+ 		", ADDRESS ='" + m.getAddress()  + "' "
+					+ 		"WHERE USERID ='" + m.getUserId()  + "'";
+		
+		try {
+			// 1) jdbc driver 등록
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+
+			// 2) Connection 객체 생성 == db에 연결
+			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "JDBC", "JDBC");
+
+			// 3) Statement 객체 생성
+			stmt = conn.createStatement();
+
+			// 4, 5) sql문 전달하면서 실행 후 결과받기
+			result = stmt.executeUpdate(sql);
+
+			// 6) 트랜젝션 처리
+			if (result > 0) { // 성공시 커밋
+				conn.commit();
+			} else { // 실패시 롤백
+				conn.rollback();
+			}
+
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				// 7) 다 쓴 jdbc용 객체 반납
+				stmt.close();
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return result;
+
+	}
 	
 	
 	
