@@ -3,6 +3,7 @@ package com.kh.controller;
 import java.util.ArrayList;
 
 import com.kh.model.dao.MemberDao;
+import com.kh.model.service.MemberService;
 import com.kh.model.vo.Member;
 import com.kh.view.MemberMenu;
 
@@ -19,7 +20,8 @@ public class MemberController {
 	 */
 	public void insertMember(String userId, String userPwd, String userName, String gender, String age, String email, String phone, String address, String hobby) {
 		Member m = new Member(userId, userPwd, userName, gender, Integer.parseInt(age), email, phone, address, hobby);
-		int result = new MemberDao().insertMember(m);
+		// int result = new MemberDao().insertMember(m);
+		int result = new MemberService().insertMember(m);
 		
 		if(result > 0) {
 			new MemberMenu().displaySuccess("성공적으로 회원추가 되었습니다.");
@@ -32,7 +34,7 @@ public class MemberController {
 	 * 사용자의 회원 전체 조회 요청을 처리해주는 메소드
 	 */
 	public void selectList() {
-		ArrayList<Member> list = new MemberDao().selectList();
+		ArrayList<Member> list = new MemberService().selectList();
 		
 		if(list.isEmpty()) {
 			new MemberMenu().displayNoData("조회된 결과가 없습니다.");
