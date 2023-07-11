@@ -305,4 +305,5 @@ public class MemberDao2 {
 		return result;
 	}
 	
+	
 }
