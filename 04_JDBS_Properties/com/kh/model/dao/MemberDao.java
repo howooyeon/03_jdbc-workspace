@@ -1,5 +1,7 @@
 package com.kh.model.dao;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -7,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import static com.kh.common.JDBCTemplate.*;
 import com.kh.model.vo.Member;
@@ -14,6 +17,30 @@ import com.kh.model.vo.Member;
 // Dao(Data Access Object) : DB에 직접적으로 접근해서 사용자의 요청에 맞는 SQL문 실행 후 결과받기(JDBC)
 // 							 결과를 Controller로 다시 리턴
 public class MemberDao {
+	
+	
+	/*
+	 * 기존의 방식 : DAO 클래스가 사용자가 요청할 때마다 실행해야되는 SQL문을 자바소스코드 내에 명시적으로 작성 => 정적코딩방식
+	 * 
+	 * > 문제점 : SQL문을 수정해야 될 경우 자바소스코드를 수정해야됨 => 수정된 내용을 반영시키고자 한다면 프로그램을 재구동 해야됨
+	 * 
+	 * > 해결방식 : SQL문들을 별도로 관리하는 외부파일(.xml)을 만들어서 실시간으로 그 파일에 기록된 sql문을 읽어들여서 실행 => 동적코딩방식
+	 * 			 여러줄 쓸 수 있도록 => xml로 하는게 좋음!!
+	 * 
+	 * 
+	 */
+	
+	private Properties prop = new Properties();
+	
+	public MemberDao() {
+		try {
+			prop.loadFromXML(new FileInputStream("resources/query.xml"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 	
 	/**
 	 * 회원 추가하는 메소드
@@ -28,7 +55,7 @@ public class MemberDao {
 		// conn 이미 서비스에서 생성돼있음!
 		PreparedStatement pstmt = null;
 		
-		String sql = "INSERT INTO MEMBER VALUES(SEQ_USERNO.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, SYSDATE)";
+		String sql = prop.getProperty("insertMember");
 		
 		try {
 			
@@ -65,7 +92,7 @@ public class MemberDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
-		String sql = "SELECT * FROM MEMBER";
+		String sql = prop.getProperty("selectList");
 		
 		try {
 	
@@ -104,7 +131,7 @@ public class MemberDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
-		String sql = "SELECT * FROM MEMBER WHERE USERID = ?";
+		String sql = prop.getProperty("selectByUserId");
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -145,7 +172,7 @@ public class MemberDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
-		String sql = "SELECT * FROM MEMBER WHERE USERNAME LIKE ?";
+		String sql = prop.getProperty("selectByUserName");
 		// 위의 sql문을 제시한 후 pstmt.setString(1, "관");
 		
 		// 해결방법 1.
@@ -194,7 +221,7 @@ public class MemberDao {
 		// 실행할 sql문 (미완성된 형태로 둘 수 있음)
 		// INSERT INTO MEMBER VALUES(SEQ_USERNO.NEXTVAL, 'XXX', 'XXX', 'XXX', 'X', XX, 'XXX', 'XX', 'XX', 'XX', SYSDATE)
 		// 미리 사용자가 입력한 값들이 들어갈 수 있게 공간확보 (?== 홀더)만 해두면됨!!
-		String sql = "UPDATE MEMBER SET USERPWD = ?, EMAIL = ?, PHONE = ?, ADDRESS = ? WHERE USERID = ?";
+		String sql = prop.getProperty("updateMember");
 		
 		try {
 			
@@ -223,5 +250,16 @@ public class MemberDao {
 		}
 		return result;
 	}
+	
+//	public int deleteMember(Connection conn, String userId) {
+//		int result = 0;
+//		preparedStatement pstmt = null;
+//		
+//		String sql = prop.getProperty("deleteMember");
+	
+	
+//	}
+	
+	
 	
 }
