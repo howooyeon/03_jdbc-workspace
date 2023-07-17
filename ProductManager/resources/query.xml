@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<!-- xml 파일에서의 주석 -->
+	<entry key="inputProduct">
+		INSERT
+		  INTO TB_PRODUCT
+		  	   (
+		  	      PNO
+		  	    , PNAME
+		  	    , PRICE
+		  	    , NATIONAL
+		  	    , BRAND
+		  	    , SSG_ABLE
+		  	    , CATEGORY
+		  	    , REG_DATE
+		  	   )
+		  VALUES
+		  	   (
+		  	      SEQ_PNO.NEXTVAL
+		  	    , ?
+		  	    , ?
+		  	    , ?
+		  	    , ?
+		  	    , ?
+		  	    , ?
+		  	    , SYSDATE
+		  	   )
+	</entry>
+	
+	<entry key="selectProduct">
+		SELECT PNO
+		  	 , PNAME
+		     , PRICE
+		     , NATIONAL
+		  	 , BRAND
+		     , SSG_ABLE
+		     , CATEGORY
+		  	 , REG_DATE
+		  FROM TB_PRODUCT
+	</entry>
+	
+	<entry key="selectByPname">
+		SELECT PNO
+		  	 , PNAME
+		     , PRICE
+		     , NATIONAL
+		  	 , BRAND
+		     , SSG_ABLE
+		     , CATEGORY
+		  	 , REG_DATE
+		  FROM TB_PRODUCT
+	     WHERE PNAME LIKE ?
+	</entry>
+	
+	<entry key="updateProduct">
+		UPDATE TB_PRODUCT
+		   SET
+		       PRICE = ?
+		     , SSG_ABLE = ?
+		 WHERE PNAME = ?
+	</entry>
+	
+	<entry key="deleteProduct">
+		DELETE
+		  FROM TB_PRODUCT
+		 WHERE pName = ?
+	</entry>
+	
+	<entry key="selectSsgProduct">
+		SELECT PNO
+		  	 , PNAME
+		     , PRICE
+		     , NATIONAL
+		  	 , BRAND
+		     , SSG_ABLE
+		     , CATEGORY
+		  	 , REG_DATE
+		  FROM TB_PRODUCT
+	     WHERE ssg_Able='Y'
+	</entry>
+	
+	<entry key="selectPriceProduct">
+	<![CDATA[
+		SELECT PNO
+		  	 , PNAME
+		     , PRICE
+		     , NATIONAL
+		  	 , BRAND
+		     , SSG_ABLE
+		     , CATEGORY
+		  	 , REG_DATE
+		FROM TB_PRODUCT
+		WHERE PRICE >= ? AND PRICE <= ?
+		]]>
+	</entry>
+
+
+
+</properties>

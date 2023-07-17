@@ -1,11 +1,13 @@
-package com.kh.run;
+package com.product.run;
 
-import com.kh.view.ProductMenu;
+import com.product.view.ProductMenu;
 
 public class Run {
 
 	public static void main(String[] args) {
+		
 		new ProductMenu().mainMenu();
+		
 	}
 
 }
