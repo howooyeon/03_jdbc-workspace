@@ -147,7 +147,6 @@ public class TestRun {
 			}
 			
 			
-			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -160,7 +159,7 @@ public class TestRun {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-		}
+		} // 진짜 잘 하고 싶은데 아무것도 모르겠다.
 		
 	}
 
