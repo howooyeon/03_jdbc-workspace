@@ -1,5 +1,7 @@
 package com.kh.controller;
 
+import java.util.ArrayList;
+
 import com.kh.model.service.PhoneService;
 import com.kh.model.vo.Phone;
 import com.kh.view.PhoneMenu;
@@ -16,6 +18,18 @@ public class PhoneController {
 		
 		if(result > 0) {
 			new PhoneMenu().displaySuccess("전화번호가 등록되었습니다.");	
+		} else {
+			new PhoneMenu().displayFail("실패했습니다.");
+		}
+		
+	}
+	
+	public void selectList() {
+		
+		ArrayList<Phone> list = new PhoneService().selectList();
+		
+		if(!list.isEmpty()) {
+			new PhoneMenu().displayShowPhone(list);	
 		} else {
 			new PhoneMenu().displayFail("실패했습니다.");
 		}

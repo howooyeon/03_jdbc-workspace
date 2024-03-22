@@ -1,6 +1,7 @@
 package com.kh.model.vo;
 
 public class Phone {
+	private int userNo;
 	private String userName;
 	private int age;
 	private String address;
@@ -10,6 +11,15 @@ public class Phone {
 	
 	public Phone(String userName, int age, String address, String phone) {
 		super();
+		this.userName = userName;
+		this.age = age;
+		this.address = address;
+		this.phone = phone;
+	}
+	
+	public Phone(int userNo, String userName, int age, String address, String phone) {
+		super();
+		this.userNo = userNo;
 		this.userName = userName;
 		this.age = age;
 		this.address = address;

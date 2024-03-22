@@ -1,8 +1,10 @@
 package com.kh.view;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.kh.controller.PhoneController;
+import com.kh.model.vo.Phone;
 
 public class PhoneMenu {
 	// 전역변수 선언
@@ -29,15 +31,28 @@ public class PhoneMenu {
 			
 			switch(menu) {
 			case 1: inputNumber(); break;
-			case 2: break;
-			case 3: break;
+			case 2: findNumber(); break;
+			case 3: pc.selectList(); break;
 			case 4: break;
 			default: break;
 			}
 		}
 	}
 
-	private void inputNumber() {
+	public void findNumber() {
+		
+	}
+	
+	public void displayShowPhone(ArrayList<Phone> list) {
+		System.out.println("검색 결과 : ");
+		
+		for(Phone p : list) {
+			System.out.println(p);
+		}
+		
+	}
+
+	public void inputNumber() {
 		System.out.print("이름 : ");
 		String userName = sc.nextLine();
 		
